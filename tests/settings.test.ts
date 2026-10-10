@@ -1,11 +1,18 @@
 // settings.ts の読み込みの補い(§9.2)。欠けた項目は既定値、版違い・壊れは既定値で mismatch。
 import { describe, expect, it } from "vitest";
-import { DEFAULTS, normalizeSettings, parseCount } from "../src/settings";
+import { DEFAULTS, isUnsetFolder, normalizeSettings, parseCount } from "../src/settings";
 
 describe("設定の読み込み(§9.2)", () => {
 	it("data.json が無ければ既定値", () => {
 		expect(normalizeSettings(undefined)).toEqual({ settings: DEFAULTS, mismatch: false });
 		expect(normalizeSettings(null).mismatch).toBe(false);
+	});
+	it("メモのフォルダの既定は未設定。保存済みの値はそのまま使う", () => {
+		expect(isUnsetFolder(normalizeSettings(undefined).settings.memoFolder)).toBe(true);
+		expect(normalizeSettings({ schemaVersion: 1, memoFolder: "Handoff" }).settings.memoFolder).toBe("Handoff");
+	});
+	it.each([["", true], ["  ", true], ["/", true], ["Handoff", false], ["a/b", false]] as const)("未設定か: %j → %s", (folder, want) => {
+		expect(isUnsetFolder(folder)).toBe(want);
 	});
 	it("版違い・壊れた中身は既定値で mismatch", () => {
 		expect(normalizeSettings({ schemaVersion: 2, memoFolder: "x" })).toEqual({ settings: DEFAULTS, mismatch: true });

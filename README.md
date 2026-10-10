@@ -16,7 +16,7 @@
 
 ## 向いている vault(前提)
 
-1 つのフォルダ(既定は `引き続きメモ`)の**直下**に、プロジェクトごとのメモを 1 本ずつ置く形を前提にしています。ファイル名(拡張子なし)が、そのまま一覧の名前になります。サブフォルダの中は見ません。
+1 つのフォルダの**直下**に、プロジェクトごとのメモを 1 本ずつ置く形を前提にしています。どのフォルダかは、入れたあとに設定の「メモのフォルダ」で指定します(下の例では `Handoff`)。ファイル名(拡張子なし)が、そのまま一覧の名前になります。サブフォルダの中は見ません。
 
 ```markdown
 # 写真整理ツール 引き継ぎメモ
@@ -35,7 +35,7 @@
 - **大きい画像で遅い**
 ```
 
-このメモ(`引き続きメモ/写真整理ツール.md`)は、2026-09-26 に見ると次のように出ます。
+このメモ(`Handoff/写真整理ツール.md`)は、2026-09-26 に見ると次のように出ます。
 
 ```
 37日  写真整理ツール  2026-08-20 19:34
@@ -52,7 +52,7 @@
 - **未着手**: 最初の `##` より前に `状態: 未着手` の行があるメモは、末尾の「未着手 N 本」にまとめます。
 - **追記の印**: 「次」の節の中の `<!-- handoffsync ` で始まる行の数を「うち追記 N」と出します。作者の手元の道具が項目を足したときに付ける印で、無ければ何も出ません。
 
-既定のフォルダ名「引き続きメモ」・節の見出し名・行の頭の文字は作者の vault の物です。設定の「メモのフォルダ」「「次」の節の見出し名」「「未解決」の節の見出し名」「最終更新の行の頭」などを、自分の vault に合わせて書き換えてください。
+節の見出し名・行の頭の文字の既定は、作者の vault の書き方に合わせてあります。設定の「「次」の節の見出し名」「「未解決」の節の見出し名」「最終更新の行の頭」などを、自分の vault に合わせて書き換えてください。「メモのフォルダ」には既定が無いので、最初に指定します。
 
 ## 入れ方
 
@@ -65,6 +65,10 @@
 ### 手で入れる
 
 [Releases](https://github.com/takosasi-dev/handoff-board/releases) から `main.js`・`manifest.json`・`styles.css` を落とし、vault の `.obsidian/plugins/handoff-board/` に置いて、コミュニティプラグインの一覧で有効にします。
+
+### 入れたら最初に設定する
+
+設定 → Handoff Board の「メモのフォルダ」に、引き継ぎメモを置いているフォルダ(例: `Handoff`)を指定します。既定は空(未設定)です。未設定のあいだは何も読まず、パネルに「メモのフォルダが未設定です。設定 → Handoff Board で指定してください」と出ます。
 
 ## 使い方
 
@@ -85,13 +89,13 @@
 - 2 行目の後ろの添え書き: 実際の見出し行(`### 次にやること` や `## 次にやること候補` のように、設定の 1 つ目の名前でないか `##` でないとき)・「同名の節 N」・「表は数えない」
 - その下: 「次」の節の先頭の項目。字数を超えた分は切って … が付きます
 - 末尾の組: 「最終更新 不明」・「未着手 N 本」(畳んである)・「読めなかったメモ」
-- メモが出ないとき: 「読み込み中」「フォルダ「引き続きメモ」がありません」「メモがありません」のどれかが出ます
+- メモが出ないとき: 「読み込み中」「メモのフォルダが未設定です。設定 → Handoff Board で指定してください」「フォルダ「Handoff」がありません」「メモがありません」のどれかが出ます。未設定のまま「引き継ぎメモボードを読み直す」を使うと、同じ未設定の文が知らせにも出ます
 
 ## 設定
 
 | 項目 | 既定 | 内容 |
 |---|---|---|
-| メモのフォルダ | `引き続きメモ` | このフォルダの直下にある .md だけを読む。サブフォルダの中は見ない。 |
+| メモのフォルダ | 空(未設定) | このフォルダの直下にある .md だけを読む。サブフォルダの中は見ない。未設定のあいだは何も読まない(例: Handoff)。 |
 | 先頭の項目の件数 | 3 | 行ごとに出す「次」の節の先頭の項目の数。0 なら出さない。 |
 | 先頭の項目の字数 | 80 | これを超えた分は切って … を付ける。 |
 | 「次」の節の見出し名 | `次にやること`・`次にやること候補` | 1行に1つ。見出しの文字(# の後)と完全一致した最初の見出しの節を使う。見出しの階層は問わない。 |
@@ -114,7 +118,7 @@
 
 ## 動作確認の状況
 
-- 版 0.1.0。Windows の Obsidian 1.14.4 で動作を確認(パネルにメモが並ぶこと、「次」を押すと節の見出しの行に移ること)
+- 版 0.1.1。Windows の Obsidian 1.14.4 で動作を確認(パネルにメモが並ぶこと、「次」を押すと節の見出しの行に移ること、メモのフォルダが未設定のときにパネルと「引き継ぎメモボードを読み直す」の知らせに案内が出て、vault の直下のノートを並べないこと)
 - iPhone・Android の実機は未確認(モバイル表示のエミュレーションで、読み込み・表示・移動のあとにドロワーが閉じることまで確認)
 - まだ確かめていない事: メモを書き換えたとき押さずに行が変わること、設定を変えたときの読み直し(どちらも Obsidian の画面では未確認)、閲覧モード(読み取りビュー)での見出しへの移動
 
@@ -126,6 +130,7 @@
 - 同名の節が 2 つあれば最初の物だけを使います。表の行は数えません(どちらも行に添え書きが出ます)。
 - 先頭の項目の `**…**` などの記法は、文字のまま出ます。
 - フォルダ直下の `.md` は全部並びます。メモごとに外す設定はありません。
+- vault の直下(どのフォルダにも入れていないノート)を、メモのフォルダとして指定することはできません。空や `/` は未設定として扱います。
 
 ## 開発
 
@@ -148,11 +153,12 @@ MIT。[LICENSE](LICENSE) を見てください。
 
 **Handoff Board** lists your handoff notes in a right-sidebar panel, oldest first, with the days since the last update, the number of next steps and open issues, and the first few next steps.
 
-- It expects one note per project directly inside one folder (default `引き続きメモ`; subfolders are ignored). The note name becomes the row name.
+- It expects one note per project directly inside one folder (subfolders are ignored). The note name becomes the row name.
+- **Set the folder first**: Settings → Handoff Board → "メモのフォルダ" (for example `Handoff`). It is empty by default, and nothing is read until you set it; the panel shows a one-line reminder instead. The vault root cannot be used as the folder.
 - The last-update date is read from a body line such as `最終更新: 2026-08-20 19:34` placed before the first `##` heading. File modification times are never used.
 - Next steps and open issues are counted in the sections whose heading text exactly matches the configured names (defaults `次にやること` / `次にやること候補` and `未解決・注意`). One unindented line starting with `- ` or `1. ` is one item; nested items, table rows and code blocks are not counted.
 - Clicking a note name opens the note; clicking a count or a preview item opens the note at that heading. Rows update when notes are changed, added, deleted or renamed.
 - Read-only: it never creates, changes, moves or deletes vault files. It writes only its own `data.json`. No network requests, no clipboard, no Node.js or Electron APIs.
-- The folder name, heading names and line prefixes default to the author's vault; change them in the settings.
+- The heading names and line prefixes default to the author's Japanese wording; change them in the settings.
 - Install with BRAT (`takosasi-dev/handoff-board`) or copy `main.js`, `manifest.json` and `styles.css` from the latest release into `.obsidian/plugins/handoff-board/`.
 - The UI is in Japanese. Tested on Obsidian 1.14.4 for Windows only; mobile was checked only with mobile emulation, not on real devices.

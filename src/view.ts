@@ -4,6 +4,7 @@
 import { ItemView, Platform, type WorkspaceLeaf } from "obsidian";
 import { buildBoard, daysSince, previewLines, sectionNotes, updatedText } from "./board";
 import type { MemoError, MemoSummary, Section } from "./parse";
+import { isUnsetFolder } from "./settings";
 import { S } from "./strings";
 import type HandoffBoardPlugin from "./main";
 
@@ -47,6 +48,7 @@ export class BoardView extends ItemView {
 		reload.addEventListener("click", () => void p.reloadAll());
 
 		if (!p.loaded) return void el.createDiv({ cls: "hb-status", text: S.loading });
+		if (isUnsetFolder(p.settings.memoFolder)) return void el.createDiv({ cls: "hb-status", text: S.unsetFolder });
 		if (!this.app.vault.getFolderByPath(p.settings.memoFolder)) {
 			return void el.createDiv({ cls: "hb-status", text: S.noFolder(p.settings.memoFolder) });
 		}

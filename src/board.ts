@@ -1,6 +1,7 @@
 // 一覧の組み立ての純関数(obsidian を import しない)。対象のパスか・日数・古い順の並び・末尾のまとまりへの振り分け。
 // 1本の解析が例外で落ちても、そのメモを「読めなかったメモ」に回して他は出す(FR-15・INV-7)。
 import { parseMemo, type MemoError, type MemoInput, type MemoSummary, type Rules, type Section, type Updated } from "./parse";
+import { isUnsetFolder } from "./settings";
 import { S } from "./strings";
 
 export type MemoResult = MemoSummary | MemoError;
@@ -13,12 +14,12 @@ export interface Board {
 	total: number;
 }
 
-/** メモフォルダの直下にある拡張子 md のファイルか(FR-1・INV-2)。folder は normalizePath 済みの物 */
+/** メモフォルダの直下にある拡張子 md のファイルか(FR-1・INV-2)。folder は normalizePath 済みの物。未設定なら何も対象にしない */
 export function isMemoPath(path: string, folder: string): boolean {
-	if (!path.endsWith(".md")) return false;
+	if (isUnsetFolder(folder) || !path.endsWith(".md")) return false;
 	const i = path.lastIndexOf("/");
 	const dir = i < 0 ? "" : path.slice(0, i);
-	return dir.normalize("NFC") === (folder === "/" ? "" : folder).normalize("NFC");
+	return dir.normalize("NFC") === folder.normalize("NFC");
 }
 
 /** 端末のローカル日付から最終更新の日付を引いた日数。時刻は使わない(FR-3)。負なら未来 */

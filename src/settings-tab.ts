@@ -1,7 +1,7 @@
 // 設定画面(minAppVersion 1.14.4 なので getSettingDefinitions の宣言型。D-7)。§9.2 の全項目を変えられる(FR-14)。
 // 見出し名は1行1つ、数の欄は整数だけ受ける。保存は Plugin.saveData() だけで、保存したら全メモを読み直す(INV-1)。
 import { normalizePath, PluginSettingTab, type App, type SettingDefinitionItem } from "obsidian";
-import { cleanList, parseCount } from "./settings";
+import { cleanList, isUnsetFolder, parseCount } from "./settings";
 import { S } from "./strings";
 import type HandoffBoardPlugin from "./main";
 
@@ -64,7 +64,7 @@ export class HandoffBoardSettingTab extends PluginSettingTab {
 			if (n === null) return;                  // validate で止まる。念のため保存しない(§9.2)
 			s[key] = n;
 		} else if (key === "memoFolder") {
-			s.memoFolder = normalizePath(text);
+			s.memoFolder = isUnsetFolder(text) ? "" : normalizePath(text);   // 空は未設定のまま保存する
 		} else if (isText(key)) {
 			s[key] = text;
 		} else {

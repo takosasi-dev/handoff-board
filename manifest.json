@@ -1,7 +1,7 @@
 {
 	"id": "handoff-board",
 	"name": "Handoff Board",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"minAppVersion": "1.14.4",
 	"description": "Show handoff notes in the sidebar, oldest first, with days since the last update, next steps, and open issues. Read-only.",
 	"author": "takosasi-dev",

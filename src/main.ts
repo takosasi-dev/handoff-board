@@ -3,7 +3,7 @@
 // 書き込みは saveData() による data.json だけ(INV-1)。
 import { normalizePath, Notice, Plugin, TFile, type TAbstractFile } from "obsidian";
 import { parseSafe, type MemoResult } from "./board";
-import { normalizeSettings, type Settings } from "./settings";
+import { isUnsetFolder, normalizeSettings, type Settings } from "./settings";
 import { HandoffBoardSettingTab } from "./settings-tab";
 import { listMemoFiles, memoFromEvent, readMemo } from "./source";
 import { S } from "./strings";
@@ -19,7 +19,10 @@ export default class HandoffBoardPlugin extends Plugin {
 		await this.loadSettings();
 		this.registerView(VIEW_TYPE, (leaf) => new BoardView(leaf, this));
 		this.addCommand({ id: "open-board", name: S.cmdOpen, callback: () => void this.openBoard() });
-		this.addCommand({ id: "reload-board", name: S.cmdReload, callback: () => void this.reloadAll() });
+		this.addCommand({ id: "reload-board", name: S.cmdReload, callback: () => {
+			if (isUnsetFolder(this.settings.memoFolder)) new Notice(S.unsetFolder);   // パネルを閉じていても分かるように。起動時には出さない
+			void this.reloadAll();
+		} });
 		this.addSettingTab(new HandoffBoardSettingTab(this.app, this));
 		this.register(() => window.cancelAnimationFrame(this.frame));
 
@@ -42,7 +45,7 @@ export default class HandoffBoardPlugin extends Plugin {
 			broken = true;
 		}
 		const { settings, mismatch } = normalizeSettings(raw);
-		settings.memoFolder = normalizePath(settings.memoFolder);
+		settings.memoFolder = isUnsetFolder(settings.memoFolder) ? "" : normalizePath(settings.memoFolder);   // normalizePath("") は "/" になる
 		this.settings = settings;
 		if (broken || mismatch) new Notice(S.noticeSettings);   // data.json は上書きしない(§9.2)
 	}

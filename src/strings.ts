@@ -11,6 +11,7 @@ export const S = {
 	loading: "読み込み中",
 	noFolder: (folder: string) => `フォルダ「${folder}」がありません`,
 	noMemos: "メモがありません",
+	unsetFolder: "メモのフォルダが未設定です。設定 → Handoff Board で指定してください",
 
 	days: (n: number) => `${n}日`,
 	future: "未来",
@@ -31,7 +32,7 @@ export const S = {
 	noticeSettings: "Handoff Board: 設定(data.json)の版が違うか読めないため、既定値で動かしています。data.json は書き換えていません。",
 
 	setFolder: "メモのフォルダ",
-	setFolderDesc: "このフォルダの直下にある .md だけを読む。サブフォルダの中は見ない。",
+	setFolderDesc: "このフォルダの直下にある .md だけを読む。サブフォルダの中は見ない。未設定のあいだは何も読まない(例: Handoff)。",
 	setPreviewCount: "先頭の項目の件数",
 	setPreviewCountDesc: "行ごとに出す「次」の節の先頭の項目の数。0 なら出さない。",
 	setPreviewChars: "先頭の項目の字数",

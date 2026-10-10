@@ -1,4 +1,5 @@
-// 設定の型・既定値・data.json の読み込みの補い(§9.2)。依頼者の vault の名前はこのファイルの既定値だけに書く(D-5・AC-16)。
+// 設定の型・既定値・data.json の読み込みの補い(§9.2)。見出し名などの形式の言葉はこのファイルの既定値だけに書く(D-5・AC-16)。
+// メモのフォルダの既定は空(未設定)。入れた人が最初に設定する。
 // obsidian を import しない(vitest で読む)。設定画面は settings-tab.ts。
 
 export interface Settings {
@@ -16,7 +17,7 @@ export interface Settings {
 
 export const DEFAULTS: Readonly<Settings> = {
 	schemaVersion: 1,
-	memoFolder: "引き続きメモ",
+	memoFolder: "",                                       // 未設定。vault ごとに違うので既定を持たない
 	nextHeadings: ["次にやること", "次にやること候補"],   // §8.3: 2語で 11 本すべて見つかる(D-9)
 	openHeadings: ["未解決・注意"],                       // D-12
 	updatedPrefix: "最終更新:",                           // handoffsync.toml の last_updated_prefix と同じ(D-17)
@@ -26,6 +27,12 @@ export const DEFAULTS: Readonly<Settings> = {
 	previewCount: 3,                                      // 仮(§8.7 が空。Q-14)
 	previewChars: 80,                                     // 仮(同上)
 };
+
+/** メモのフォルダが未設定か。空・空白だけ・"/"(normalizePath("") の戻り)は vault の直下ではなく未設定として扱う */
+export function isUnsetFolder(folder: string): boolean {
+	const t = folder.trim();
+	return t === "" || t === "/";
+}
 
 /** 見出し名の一覧: 前後の空白を除き NFC、空の行は捨てる(§9.2) */
 export function cleanList(lines: readonly string[]): string[] {

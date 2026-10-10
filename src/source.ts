@@ -3,10 +3,11 @@
 import { TFile, type App } from "obsidian";
 import { isMemoPath } from "./board";
 import type { MemoInput } from "./parse";
+import { isUnsetFolder } from "./settings";
 
-/** メモフォルダ直下の .md。フォルダが無ければ null */
+/** メモフォルダ直下の .md。フォルダが無いか未設定なら null(未設定のとき vault の根を引かない) */
 export function listMemoFiles(app: App, folder: string): TFile[] | null {
-	const dir = app.vault.getFolderByPath(folder);
+	const dir = isUnsetFolder(folder) ? null : app.vault.getFolderByPath(folder);
 	if (!dir) return null;
 	return dir.children.filter((f): f is TFile => f instanceof TFile && isMemoPath(f.path, folder));
 }

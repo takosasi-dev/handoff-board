@@ -161,8 +161,8 @@ describe("対象のパス(FR-1・AC-2)", () => {
 	])("%s → %s", (p, want) => {
 		expect(isMemoPath(p, "引き続きメモ")).toBe(want);
 	});
-	it("vault の直下を指すとき", () => {
-		expect(isMemoPath("a.md", "/")).toBe(true);
-		expect(isMemoPath("x/a.md", "/")).toBe(false);
+	it.each(["", "  ", "/"])("フォルダが未設定(%j)なら vault の直下も対象にしない", (folder) => {
+		expect(isMemoPath("a.md", folder)).toBe(false);
+		expect(isMemoPath("x/a.md", folder)).toBe(false);
 	});
 });
