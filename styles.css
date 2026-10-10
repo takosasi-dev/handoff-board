@@ -1,0 +1,20 @@
+/* Handoff Board: 右サイドバーのパネル(§9.4)。クラスで当て、インラインスタイルは使わない */
+.hb-board { padding: var(--size-4-2); }
+.hb-top { display: flex; align-items: center; gap: var(--size-4-2); margin-bottom: var(--size-4-2); }
+.hb-count { flex: 1; font-weight: var(--font-semibold); }
+.hb-status { color: var(--text-muted); }
+.hb-row { padding: var(--size-4-1) 0 var(--size-4-2); border-bottom: 1px solid var(--background-modifier-border); }
+.hb-line1 { display: flex; align-items: baseline; gap: var(--size-4-2); }
+.hb-days { flex: none; min-width: 3em; text-align: end; font-variant-numeric: tabular-nums; color: var(--text-accent); }
+.hb-name { flex: 1; min-width: 0; overflow-wrap: anywhere; font-weight: var(--font-semibold); }
+.hb-updated { flex: none; color: var(--text-muted); font-size: var(--font-ui-smaller); }
+.hb-line2 { display: flex; flex-wrap: wrap; gap: 2px var(--size-4-3); margin-inline-start: calc(3em + var(--size-4-2)); font-size: var(--font-ui-small); }
+.hb-appended, .hb-note { color: var(--text-muted); font-size: var(--font-ui-smaller); }
+.hb-preview { display: flex; flex-direction: column; margin-inline-start: calc(3em + var(--size-4-2)); font-size: var(--font-ui-small); }
+.hb-item { color: var(--text-normal); overflow-wrap: anywhere; }
+.hb-item::before { content: "・"; color: var(--text-faint); }
+.hb-link { text-decoration: none; }
+.hb-link:hover { text-decoration: underline; }
+.hb-group { margin-top: var(--size-4-3); }
+.hb-group > summary { cursor: pointer; font-weight: var(--font-semibold); color: var(--text-muted); }
+.hb-error { color: var(--text-error); font-size: var(--font-ui-smaller); overflow-wrap: anywhere; }
